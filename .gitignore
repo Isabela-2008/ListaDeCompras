@@ -1,0 +1,26 @@
+# Ignorar arquivos de configuração
+*.env
+
+# Ignorar arquivos de log
+*.log
+
+# Ignorar arquivos temporários do sistema
+.DS_Store
+Thumbs.db
+
+# Ignorar arquivos do editor
+.vscode/
+.idea/
+*.swp
+
+# Ignorar pastas de dependências
+node_modules/
+
+# Ignorar pastas de build
+dist/
+build/
+
+# Ignorar arquivos específicos do projeto
+itens.json
+3style.css
+3logica.js
