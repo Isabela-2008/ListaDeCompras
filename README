@@ -1,0 +1,45 @@
+📋 Lista de Compras
+Este projeto é um sistema de lista de compras interativa, desenvolvido para facilitar a organização e cálculo automático dos itens adicionados. Ele foi implementado utilizando HTML, CSS e JavaScript.
+🚀 Funcionalidades Implementadas
+✅ Adição dinâmica de itens: Os usuários podem inserir novos itens manualmente ou carregá-los de uma API.
+✅ Cálculo automático de preços: O sistema calcula automaticamente o total de cada item e o valor geral da compra.
+✅ Botão para atualizar a lista: Carrega itens de um arquivo externo (itens.json) e os adiciona à tabela, evitando duplicações.
+✅ Validação de entradas: Impede que valores negativos sejam inseridos nos campos de quantidade e preço.
+✅ Interface responsiva e estilizada: O layout se adapta a diferentes dispositivos e inclui um tema fofo com cores suaves.
+
+🔥 Desafios Enfrentados
+🔹 Evitar a duplicação de itens ao atualizar a lista
+Foi necessário implementar uma verificação para impedir que itens já existentes fossem adicionados novamente.
+🔹 Carregar itens de um arquivo JSON
+Inicialmente, o sistema não lia corretamente os dados do itens.json, exigindo ajustes na função fetch().
+🔹 Melhorar a interface e tornar o sistema responsivo
+O projeto passou por melhorias visuais para garantir um layout agradável e adaptável a telas menores.
+🔹 Correção de erros de formatação no JSON
+Alguns itens estavam sem vírgulas de separação, causando falhas na leitura dos dados.
+
+✅ Como Testamos e Validamos o Sistema
+📌 Testes Manuais
+- Adicionamos diferentes itens e verificamos se os cálculos eram feitos corretamente.
+- Tentamos atualizar a lista várias vezes para confirmar que itens duplicados não apareciam.
+- Testamos o sistema em desktop e dispositivos móveis para garantir a responsividade.
+- Inserimos valores inválidos (negativos) para confirmar que a validação funcionava.
+
+📌 Depuração com Console (F12)
+- Usamos console.log() em várias partes do código para entender o fluxo e detectar erros.
+- Monitoramos chamadas de API para garantir que os dados estavam sendo carregados corretamente.
+
+📌 Testes de Interface
+- Ajustamos cores, tamanhos e posicionamento de elementos para garantir boa usabilidade.
+- Realizamos testes de acessibilidade, garantindo contraste adequado entre textos e fundo.
+
+
+🛠️ Tecnologias Utilizadas
+- HTML → Estrutura da página
+- CSS → Estilização e layout responsivo
+- JavaScript → Lógica de interação e cálculos
+
+
+💡 Melhorias Futuras
+🔸 Adicionar uma funcionalidade para remover itens individualmente.
+🔸 Permitir que os usuários salvem a lista para consulta posterior.
+🔸 Implementar um modo escuro para melhor conforto visual.
