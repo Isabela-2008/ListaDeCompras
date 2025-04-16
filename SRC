@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Compras</title>
+  <link rel="stylesheet" href="3style.css"> 
+</head>
+<body>
+  <h1>Lista de Compras</h1>
+
+  <table id="tabela-itens">
+    <thead>
+      <tr>
+        <th>Qt</th>
+        <th>Item</th>
+        <th>Valor Unitário</th>
+        <th>Soma</th>
+      </tr>
+    </thead>
+    <tbody id="corpo-tabela"></tbody>
+  </table>
+
+  <button onclick="adicionarItem()">Adicionar Item</button>
+  <button onclick="atualizarLista()">Atualizar Lista</button>
+  <div class="total" id="total-geral">Total Geral: R$ 0.00</div>
+
+  <script src="3logica.js"></script> <!-- Referência ao arquivo JavaScript -->
+</body>
+</html>
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+const listaItens = [
+    "Arroz", "Feijão", "Macarrão", "Farinha de Mandioca", "Farinha de Trigo",
+    "Fubá", "Café", "Óleo de Soja", "Leite", "Açúcar", "Sal", "Ovos", "Biscoito",
+    "Detergente Líquido", "Sabão em Barra", "Desinfetante", "Água Sanitária",
+    "Esponja", "Sabão em Pó", "Papel Higiênico", "Papel Toalha", "Saco de Lixo",
+    "Carne Moída", "Coxão Mole", "Bisteca Suína", "Lombo Suíno", "Peito de Frango",
+    "Coxa e Sobrecoxa", "Queijo", "Presunto", "Iogurte", "Nata"
+  ];
+  
+  const tabela = document.getElementById("corpo-tabela");
+  
+  function adicionarItem(nome = "") {
+    const linha = document.createElement("tr");
+  
+    linha.innerHTML = `
+      <td><input type="number" class="qtd" min="0" max="999" step="1" value="0" oninput="calcularTotal()" /></td>
+      <td><input type="text" value="${nome}" /></td>
+      <td><input type="number" class="valor" min="0" step="0.01" value="0" oninput="calcularTotal()" /></td>
+      <td class="soma">R$ 0.00</td>
+    `;
+  
+    tabela.appendChild(linha);
+  }
+  
+  function calcularTotal() {
+    let total = 0;
+    const linhas = tabela.querySelectorAll("tr");
+    linhas.forEach(linha => {
+      const qtdInput = linha.children[0].children[0];
+      const valInput = linha.children[2].children[0];
+      
+      // Validação: impedir números negativos
+      if (qtdInput.value < 0) qtdInput.value = 0;
+      if (valInput.value < 0) valInput.value = 0;
+  
+      const qtd = parseFloat(qtdInput.value) || 0;
+      const val = parseFloat(valInput.value) || 0;
+      const soma = qtd * val;
+      linha.children[3].textContent = `R$ ${soma.toFixed(2)}`;
+      total += soma;
+    });
+    document.getElementById("total-geral").textContent = `Total Geral: R$ ${total.toFixed(2)}`;
+  }
+  
+  async function atualizarLista() {
+    try {
+      const resposta = await fetch('itens.json');
+      if (!resposta.ok) throw new Error('Erro ao carregar os itens');
+      
+      const novosItens = await resposta.json();
+      novosItens.forEach(item => adicionarItem(item.nome));
+      calcularTotal();
+    } catch (erro) {
+      console.error('Erro:', erro);
+    }
+
+    function adicionarItem(nome = "") {
+        const linhas = tabela.querySelectorAll("tr");
+        
+        // Verifica se o item já existe na tabela
+        const itemExistente = Array.from(linhas).some(linha => {
+          const item = linha.children[1].children[0].value; // Obtém o nome do item na tabela
+          return item === nome;
+        });
+      
+        if (itemExistente) return; // Se o item já existe, não adiciona novamente
+      
+        const linha = document.createElement("tr");
+      
+        linha.innerHTML = `
+          <td><input type="number" class="qtd" min="0" max="999" step="1" value="0" oninput="calcularTotal()" /></td>
+          <td><input type="text" value="${nome}" /></td>
+          <td><input type="number" class="valor" min="0" step="0.01" value="0" oninput="calcularTotal()" /></td>
+          <td class="soma">R$ 0.00</td>
+        `;
+      
+        tabela.appendChild(linha);
+      }
+  }
+  
+  // Inicializa com os itens definidos
+  window.onload = () => {
+    listaItens.forEach(nome => adicionarItem(nome));
+  };
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Estilo básico */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    padding: 20px;
+    color: #444;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #f5f5f5;
+    text-align: left;
+}
+
+th {
+    background: #ffe6e9;
+    font-weight: bold;
+    color: #ff758c;
+    font-size: 1.1em;
+}
+
+td {
+    background: #fffbfa;
+    font-size: 1em;
+}
+
+input[type="text"] {
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 8px;
+    border: 1px solid #ff9a9e;
+    padding: 8px;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus {
+    border-color: #ff758c;
+    outline: none;
+}
+
+input.qtd {
+    max-width: 50px;
+    text-align: center;
+}
+
+input.valor {
+    max-width: 100px;
+    text-align: right;
+}
+
+.soma {
+    text-align: right;
+    white-space: nowrap;
+    font-style: italic;
+    color: #888;
+}
+
+.total {
+    font-weight: bold;
+    font-size: 1.3em;
+    margin-top: 10px;
+    color: #ff758c;
+}
+
+button {
+    margin: 10px 0;
+    padding: 12px 18px;
+    background: linear-gradient(135deg, #ff758c, #ff9a9e);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+button:hover {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, #ff6073, #ff758c);
+}
+
+/* Layout responsivo para telas menores */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    table {
+        font-size: 0.9em;
+    }
+
+    button {
+        width: 100%;
+        margin: 5px 0;
+    }
+}
